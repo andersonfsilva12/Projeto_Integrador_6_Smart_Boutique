@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ Smart Boutique - Nalú Modas - Controle Climático</title>
+    <!-- Importando a biblioteca Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding-top: 60px; /* Ajuste para não cobrir o conteúdo devido à barra fixa */
+            padding-bottom: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            color: #333;
+            transition: background-color 0.3s ease;
+            font-size: 1em; /* Tamanho de fonte base inicial */
+        }
+
+        /* Estilos da Barra de Acessibilidade Fixa */
+        .accessibility-bar {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .accessibility-buttons {
+            display: inline-block;
+        }
+
+        .accessibility-button {
+            padding: 8px 12px;
+            margin-right: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .accessibility-button:hover {
+            background-color: #0056b3;
+        }
+
+        .contrast-button {
+            padding: 8px 12px;
+            margin-right: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #333;
+            background-color: #ddd;
+            border: none;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contrast-button.high-contrast {
+            color: #fff;
+            background-color: #333;
+        }
+
+        /* Estilos para o modo de alto contraste */
+        .high-contrast-mode {
+            background-color: #000 !important;
+            color: #fff !important;
+        }
+
+        .high-contrast-mode .accessibility-bar {
+            background-color: rgba(30, 30, 30, 0.95);
+        }
+
+        .high-contrast-mode .container {
+            background: #121212 !important;
+            color: #fff !important;
+            box-shadow: 0 2px 10px rgba(255,255,255,0.1);
+        }
+
+        .high-contrast-mode h1, 
+        .high-contrast-mode h3, 
+        .high-contrast-mode .metric-box h3 {
+            color: #fff !important;
+        }
+
+        .high-contrast-mode .metric-box {
+            background: #222 !important;
+            border: 1px solid #444;
+        }
+
+        .high-contrast-mode .metric-box p {
+            color: #4da3ff !important;
+        }
+
+        .high-contrast-mode .table-scroll {
+            border-color: #444;
+        }
+
+        .high-contrast-mode th {
+            background-color: #222 !important;
+            color: #fff !important;
+            border-bottom: 1px solid #444;
+        }
+
+        .high-contrast-mode td {
+            border-bottom: 1px solid #333;
+            color: #ddd;
+        }
+
+        .high-contrast-mode .filter-btn {
+            background-color: #222;
+            color: #fff;
+            border-color: #444;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { text-align: center; color: #2c3e50; }
+        .card-status {
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .seguro { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alerta { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .metrics-grid {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+        .metric-box {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 6px;
+            width: 40%;
+            text-align: center;
+        }
+        .metric-box h3 { margin: 0 0 10px 0; color: #495057; }
+        .metric-box p { font-size: 24px; margin: 0; font-weight: bold; color: #007bff; }
+
+        /* Estilo para os botões de filtro de tempo */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .filter-btn {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #495057;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover {
+            background-color: #cbd3da;
+        }
+        .filter-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        .table-scroll {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border-bottom: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: center;
+        }
+        th { background-color: #007bff; color: white; position: sticky; top: 0; }
+    </style>
+</head>
+<body>
+    <!-- Barra de Acessibilidade Fixa -->
+    <div class="accessibility-bar">
+        <div class="accessibility-buttons">
+            <button class="accessibility-button" onclick="adjustFontSize(0.2)">A+</button>
+            <button class="accessibility-button" onclick="adjustFontSize(-0.2)">A-</button>
+            <button class="accessibility-button" onclick="resetFontSize()">A</button>
+            <button id="contrastButton" class="contrast-button" onclick="toggleContrast()">Contraste</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>🛡️ Smart Boutique - Nalú Modas - Controle Climático</h1>
+
+        <!-- Status dinâmico -->
+        <div id="card-status" class="card-status {{ 'alerta' if 'ALERTA' in ultima.status_risco else 'seguro' }}">
+            <span id="txt-status">⚠️ {{ ultima.status_risco }}</span>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-box">
+                <h3>Temperatura</h3>
+                <p><span id="txt-temp">{{ ultima.temperatura }}</span> °C</p>
+            </div>
+            <div class="metric-box">
+                <h3>Umidade Relativa</h3>
+                <p><span id="txt-umid">{{ ultima.umidade }}</span> %</p>
+            </div>
+        </div>
+
+        <!-- Gráfico de Linhas -->
+        <h3>Gráfico de Monitoramento (Tempo x Graus/Umidade Histórico)</h3>
+
+        <!-- Botões de Intervalo de Agrupamento -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="mudarIntervalo(10, this)">Mostrar a cada 10 min</button>
+            <button class="filter-btn" onclick="mudarIntervalo(60, this)">Mostrar a cada 1 hora</button>
+            <button class="filter-btn" onclick="mudarIntervalo(1440, this)">Último 1 dia</button>
+            <button class="filter-btn" onclick="mudarIntervalo('todos', this)">Tudo</button>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="graficoClima"></canvas>
+        </div>
+
+        <h3>Histórico Recente de Leituras</h3>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data/Hora</th>
+                        <th>Temperatura (°C)</th>
+                        <th>Umidade (%)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-historico">
+                    {% for row in historico %}
+                    <tr>
+                        <td>{{ row.data_hora }}</td>
+                        <td>{{ row.temperatura }}</td>
+                        <td>{{ row.umidade }}</td>
+                        <td>{{ row.status_risco }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Funções de Acessibilidade
+        const bodyElement = document.body;
+        const contrastButton = document.getElementById('contrastButton');
+        let highContrast = false;
+        let currentFontSize = 1; // Tamanho de fonte base
+
+        function adjustFontSize(amount) {
+            currentFontSize += amount;
+            bodyElement.style.fontSize = `${currentFontSize}em`;
+        }
+
+        function resetFontSize() {
+            currentFontSize = 1;
+            bodyElement.style.fontSize = `1em`;
+        }
+
+        function toggleContrast() {
+            highContrast = !highContrast;
+            if (highContrast) {
+                bodyElement.classList.add('high-contrast-mode');
+                contrastButton.textContent = 'Alto Contraste';
+                contrastButton.classList.add('high-contrast');
+            } else {
+                bodyElement.classList.remove('high-contrast-mode');
+                contrastButton.textContent = 'Contraste';
+                contrastButton.classList.remove('high-contrast');
+            }
+        }
+
+        // Funções Originais do Dashboard Climático
+        let dadosGlobais = null;
+        let intervaloMinutos = 10; // Padrão inicial
+
+        function mudarIntervalo(minutos, elementoBotao) {
+            // Remove a classe active de todos e coloca apenas no botão clicado
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            elementoBotao.classList.add('active');
+
+            intervaloMinutos = minutos;
+            if (dadosGlobais) {
+                processarEExibirDados(dadosGlobais);
+            }
+        }
+
+        // Configuração inicial do Gráfico com Chart.js
+        const ctx = document.getElementById('graficoClima').getContext('2d');
+        const graficoClima = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Temperatura (°C)',
+                    data: [],
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                    tension: 0.1
+                }, {
+                    label: 'Umidade (%)',
+                    data: [],
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: false }
+                }
+            }
+        });
+
+        function processarEExibirDados(data) {
+            dadosGlobais = data;
+
+            document.getElementById('txt-temp').innerText = data.ultima.temperatura;
+            document.getElementById('txt-umid').innerText = data.ultima.umidade;
+
+            const cardStatus = document.getElementById('card-status');
+            const txtStatus = document.getElementById('txt-status');
+
+            if (data.ultima.status_risco.includes("ALERTA")) {
+                cardStatus.className = "card-status alerta";
+                txtStatus.innerText = "⚠️ " + data.ultima.status_risco;
+            } else {
+                cardStatus.className = "card-status seguro";
+                txtStatus.innerText = "✅ " + data.ultima.status_risco;
+            }
+
+            let historicoProcessado = [];
+
+            if (intervaloMinutos === 'todos') {
+                historicoProcessado = data.historico;
+            } else {
+                let ultimoTempoAdicionado = null;
+
+                data.historico.forEach(row => {
+                    let dataStringCorrigida = row.data_hora.replace(' ', 'T');
+                    let dataLeitura = new Date(dataStringCorrigida);
+
+                    if (isNaN(dataLeitura.getTime())) {
+                        return;
+                    }
+
+                    if (!ultimoTempoAdicionado) {
+                        historicoProcessado.push(row);
+                        ultimoTempoAdicionado = dataLeitura;
+                    } else {
+                        let diffMinutos = Math.abs(ultimoTempoAdicionado - dataLeitura) / (1000 * 60);
+                        if (diffMinutos >= intervaloMinutos) {
+                            historicoProcessado.push(row);
+                            ultimoTempoAdicionado = dataLeitura;
+                        }
+                    }
+                });
+            }
+
+            // Atualiza Tabela de Histórico
+            let tbody = document.getElementById('tabela-historico');
+            tbody.innerHTML = "";
+            historicoProcessado.forEach(row => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row.data_hora}</td><td>${row.temperatura}</td><td>${row.umidade}</td><td>${row.status_risco}</td>`;
+                tbody.appendChild(tr);
+            });
+
+            // Atualiza o Gráfico
+            let historicoInvertido = [...historicoProcessado].reverse();
+            graficoClima.data.labels = historicoInvertido.map(row => row.data_hora);
+            graficoClima.data.datasets[0].data = historicoInvertido.map(row => row.temperatura);
+            graficoClima.data.datasets[1].data = historicoInvertido.map(row => row.umidade);
+            graficoClima.update();
+        }
+
+        function atualizarDadosEmTempoReal() {
+            fetch('/api/dados_json')
+                .then(response => response.json())
+                .then(data => {
+                    processarEExibirDados(data);
+                })
+                .catch(error => console.error('Erro ao atualizar dados:', error));
+        }
+
+        setInterval(atualizarDadosEmTempoReal, 10000);
+        atualizarDadosEmTempoReal();
+    </script>
+</body>
+</html>

@@ -7,7 +7,7 @@ Sistema de monitoramento e automação IoT integrado a um dashboard web em Flask
 
 O Smart Boutique é um sistema completo que combina firmware embarcado em um ESP32 com uma aplicação web hospedada no PythonAnywhere. 
 
-O hardware coleta dados de **temperatura, umidade e presença (movimento)** no ambiente da loja, salvando a contagem de acessos na memória não volátil (Flash) do microcontrolador. Os dados são transmitidos simultaneamente para:
+O hardware coleta dados de temperatura, umidade e presença (movimento) no ambiente da loja, salvando a contagem de acessos na memória não volátil (Flash) do microcontrolador. Os dados são transmitidos simultaneamente para:
 1. Plataforma Blynk Cloud: para monitoramento e alertas em tempo real em dispositivos móveis.
 2. Servidor Web Flask (PythonAnywhere): via API HTTP/JSON, alimentando um banco de dados SQLite para exibição em dashboard e análises históricas.
 
@@ -90,5 +90,15 @@ Desenvolvido por:
 
 Alunos da faculdade UNIVESP-EAD de engenharia de computação, em desenvolvimento ao Projeto Integrador 6: 2°semestre de 2026
 Turma de 2022 - T22 - Grupo 16
+
+Alunos:  
+        Adaumir A. Dos Santos
+        Ana Paula Ap. Pedroso
+        Anderson Fco Da Silva
+        Brenda N. S. Machado
+        Daniel dos S. Lopes
+        Gabriela De M. Saqui
+        Marcelo S. Pereira
+        Wainer De P. Dias
 
 Sob orientação da coordenadora Aline Santos, a quem somos imensamente gratos pela paciência e pela atenção com o grupo.

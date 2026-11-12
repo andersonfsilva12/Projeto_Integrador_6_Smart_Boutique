@@ -89,8 +89,6 @@ Use marcadores genéricos ou variáveis de ambiente para preservar a segurança 
 Desenvolvido por:
 
 Alunos da faculdade UNIVESP-EAD de engenharia de computação, em desenvolvimento ao Projeto Integrador 6: 2°semestre de 2026
-Turma de 2022 - T22 - 
-
-Grupo 16
+Turma de 2022 - T22 - Grupo 16
 
 Sob orientação da coordenadora Aline Santos, a quem somos imensamente gratos pela paciência e pela atenção com o grupo.

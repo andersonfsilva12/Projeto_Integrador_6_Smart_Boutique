@@ -54,14 +54,14 @@ GPIO 13: Sinal do Sensor PIR (Presença)
 GPIO 14: Sinal do Sensor DHT22 (Clima)
 
 
-📡 Mapeamento de Pinos e Portas Virtuais (Blynk)
+    📡 Mapeamento de Pinos e Portas Virtuais (Blynk)
 Pin out Virtual - Blynk App
 V1: LED/Indicador de Movimento (0 = Sem movimento, 255 = Movimento)
 V2: Display / Contagem acumulada de presença
 V3: Display de Temperatura (°C)
 V4: Display de Umidade (%)
 
-🚀 Como Rodar o Código do ESP32 (Arduino IDE / PlatformIO)
+    🚀 Como Rodar o Código do ESP32 (Arduino IDE / PlatformIO)
 Abra o arquivo Código_ESP32 no seu ambiente de desenvolvimento (Arduino IDE ou VS Code com PlatformIO).
 
 Instale as dependências necessárias pelas bibliotecas do gerenciador:
@@ -81,11 +81,11 @@ Conecte o ESP32 via USB e selecione a placa ESP32 Dev Module.
 
 Compile e faça o upload para a placa.
 
-🔐 Segurança das Credenciais
+    🔐 Segurança das Credenciais
 Atenção: Lembre-se de nunca subir dados sensíveis de produção (senhas de Wi-Fi pessoais ou tokens privados) em repositórios públicos. 
 Use marcadores genéricos ou variáveis de ambiente para preservar a segurança das redes.
 
-👨‍💻 Autores
+    👨‍💻 Autores
 Desenvolvido por:
 
 Alunos da faculdade UNIVESP-EAD de engenharia de computação, em desenvolvimento ao Projeto Integrador 6: 2°semestre de 2026
@@ -100,5 +100,6 @@ Alunos:
         Gabriela De M. Saqui
         Marcelo S. Pereira
         Wainer De P. Dias
+
 
 Sob orientação da coordenadora Aline Santos, a quem somos imensamente gratos pela paciência e pela atenção com o grupo.

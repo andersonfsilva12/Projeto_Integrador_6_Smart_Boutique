@@ -1,5 +1,7 @@
   Smart Boutique - Nalú Modas 4.0 🛍️🤖
 
+SISTEMA NO AR: https://nalumodas.pythonanywhere.com/
+
 Sistema de monitoramento e automação IoT integrado a um dashboard web em Flask para gestão ambiental e de fluxo de pessoas na loja Nalú Modas.
 
 
